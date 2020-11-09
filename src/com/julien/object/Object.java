@@ -1,5 +1,7 @@
 package com.julien.object;
 
+import com.julien.game.Main;
+
 public class Object {
 
     private int width, height; // dimensions
@@ -10,6 +12,12 @@ public class Object {
         this.height = height;
         this.x = x;
         this.y = y;
+    }
+
+    public void move() {
+        if (Main.scene.getxPos() >= 0) {
+            this.x = this.x - Main.scene.getDx();
+        }
     }
 
     // GETTERS & SETTERS

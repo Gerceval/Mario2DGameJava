@@ -54,6 +54,16 @@ public class Character {
         return img;
     }
 
+    public boolean collisionFront(Object objet) {
+        if (isTurnToRight) {
+            if (x + width < objet.getX() || x + width > objet.getX() + 5 || y + height < objet.getY() || y > (objet.getY() + objet.getHeight())) {
+                // Trop à gauche ---------- Trop à droite ----------------- Trop haut ----------------- Trop bas
+                return false;
+            } else { return true; } // Collision
+        }
+        else { return false; }
+    }
+
     // GETTERS
     public int getWidth() {
         return width;
@@ -71,11 +81,11 @@ public class Character {
         return y;
     }
 
-    public boolean isWalking() {
+    public boolean getIsWalking() {
         return isWalking;
     }
 
-    public boolean isTurnToRight() {
+    public boolean getIsTurnToRight() {
         return isTurnToRight;
     }
 

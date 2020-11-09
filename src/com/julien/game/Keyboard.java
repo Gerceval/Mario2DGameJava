@@ -16,10 +16,14 @@ public class Keyboard implements KeyListener {
             Main.scene.mario.setWalking(true);
             Main.scene.mario.setTurnToRight(true);
             Main.scene.setDx(1); // déplace le fond vers la gauche
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) { // flèche gauche
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_LEFT) { // flèche gauche
             Main.scene.mario.setWalking(true);
             Main.scene.mario.setTurnToRight(false);
             Main.scene.setDx(-1); // déplace le fond vers la droite
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_SPACE) { // espace
+            Main.scene.mario.setIsJumping(true);
         }
     }
 

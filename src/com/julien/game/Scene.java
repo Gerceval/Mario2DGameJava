@@ -86,21 +86,20 @@ public class Scene extends JPanel {
         super.paintComponent(g);
         Graphics g2 = (Graphics2D) g;
 
-        // Collision detection
-        if (this.mario.collisionFront(redPipe_01)) {
-            this.mario.setWalking(false);
-            this.dx = 0;
-        }
+        // Detection des collisions de Mario
+        if (this.mario.near(redPipe_01)) { this.mario.collision(redPipe_01); }
+        if (this.mario.near(block_01)) { this.mario.collision(block_01); }
 
         this.moveBackground();
         redPipe_01.move();
+        block_01.move();
 
         g2.drawImage(imgBackground_01, xBackground_01, 0, null); // Dessin de l'image de fond
         g2.drawImage(imgBackground_02, xBakcground_02, 0, null); // Dessin de l'image de fond
         g2.drawImage(imgCastle_1, 10 - xPos, 95, null);
         g2.drawImage(imgStart, 220 - xPos, 234, null);
         g2.drawImage(redPipe_01.getImgRedPipe(), redPipe_01.getX(), redPipe_01.getY(), null);
-        g2.drawImage(block_01.getImgBlock(), block_01.getX() - xPos, block_01.getY(), null);
+        g2.drawImage(block_01.getImgBlock(), block_01.getX(), block_01.getY(), null);
 
         // Placement de Mario
         if (mario.getIsJumping()) {
@@ -139,4 +138,12 @@ public class Scene extends JPanel {
     public int getyBottom() { return yBottom; }
 
     public int getTopHeight() { return topHeight; }
+
+    public int setyBottom(int yBottom) {
+        return this.yBottom = yBottom;
+    }
+
+    public int setTopHeight(int topHeight) {
+        return this.topHeight = topHeight;
+    }
 }

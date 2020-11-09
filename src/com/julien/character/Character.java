@@ -32,7 +32,7 @@ public class Character {
         ImageIcon ico;
         Image img;
 
-        if (!isWalking || Main.scene.getxPos() <= 0) {
+        if (!isWalking || Main.scene.getxPos() <= 0 || Main.scene.getxPos() > 4430) {
             if (isTurnToRight) {
                 str = "/images/" + name + "StopRight.png";
             } else {

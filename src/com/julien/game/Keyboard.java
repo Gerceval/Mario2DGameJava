@@ -8,16 +8,21 @@ public class Keyboard implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) { // flèche droite
-            if (Main.scene.getxPos() == -1) { // Annule le décalage de 1
-                Main.scene.setxPos(0);
-                Main.scene.setxBackground_01(-50);
-                Main.scene.setxBackground_02(750);
+            if (Main.scene.getxPos() == -1) {
+                Main.scene.setxPos(0); // Init xPos
+                Main.scene.setxBackground_01(-50); // init xBackground_01
+                Main.scene.setxBackground_02(750); // init xBackground_02
             }
             Main.scene.mario.setWalking(true);
             Main.scene.mario.setTurnToRight(true);
             Main.scene.setDx(1); // déplace le fond vers la gauche
         }
         else if (e.getKeyCode() == KeyEvent.VK_LEFT) { // flèche gauche
+            if (Main.scene.getxPos() == 4431) {
+                Main.scene.setxPos(4430);
+                Main.scene.setxBackground_01(-50);
+                Main.scene.setxBackground_02(750);
+            }
             Main.scene.mario.setWalking(true);
             Main.scene.mario.setTurnToRight(false);
             Main.scene.setDx(-1); // déplace le fond vers la droite

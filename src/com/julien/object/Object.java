@@ -2,10 +2,16 @@ package com.julien.object;
 
 import com.julien.game.Main;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class Object {
 
     private int width, height; // dimensions
     private int x, y; // position
+
+    protected Image imgObject;
+    protected ImageIcon icoObject;
 
     public Object(int width, int height, int x, int y) {
         this.width = width;
@@ -52,4 +58,6 @@ public class Object {
     public void setY(int y) {
         this.y = y;
     }
+
+    public Image getImgObject() { return this.imgObject; }
 }

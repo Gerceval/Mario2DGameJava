@@ -32,11 +32,11 @@ public class Mario extends Character {
         jumpCount++;
 
         // Montée du saut
-        if (jumpCount <= 35) {
+        if (jumpCount <= 40) {
             if (this.getY() > Main.scene.getTopHeight()) {
                 this.setY(this.getY() - 4); // Mario monte de 4 pixels
             } else {
-                jumpCount = 36;
+                jumpCount = 41;
             }
             if (this.getIsTurnToRight()) {
                 imagePath = "/images/marioJumpRight.png";

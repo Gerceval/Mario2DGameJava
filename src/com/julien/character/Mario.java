@@ -1,6 +1,7 @@
 package com.julien.character;
 
 import com.julien.game.Main;
+import com.julien.object.Coin;
 import com.julien.object.Object;
 
 import javax.swing.*;
@@ -8,8 +9,7 @@ import java.awt.*;
 
 public class Mario extends Character {
 
-    private ImageIcon icoMario;
-    private Image imgMario;
+    private final Image imgMario;
     private boolean isJumping;
     private int jumpCount; // durée et hauteur du saut
 
@@ -17,7 +17,7 @@ public class Mario extends Character {
     public Mario(int x, int y) {
         super(28, 50, x, y);
 
-        icoMario = new ImageIcon(getClass().getResource("/images/marioWalkRight.png"));
+        ImageIcon icoMario = new ImageIcon(getClass().getResource("/images/marioWalkRight.png"));
         imgMario = icoMario.getImage();
         this.isJumping = false;
         this.jumpCount = 0;
@@ -89,6 +89,10 @@ public class Mario extends Character {
         } else if (!super.collisionBottom(object) && !this.isJumping) {
             Main.scene.setTopHeight(0); // altitude du plafond initial (ciel)
         }
+    }
+
+    public boolean collisionCoin(Coin coin) {
+        return super.collisionBack(coin) || super.collisionFront(coin) || super.collisionBottom(coin) || super.collisionTop(coin);
     }
 
     // GETTERS & SETTERS

@@ -195,10 +195,19 @@ public class Scene extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Detection des collisions de Mario
+        // Detection des collisions de Mario avec les objets
         for (Object object : arrayObjects) { // Similaire à Array.forEach en JS
             if (this.mario.near(object)) {
                 this.mario.collision(object);
+            }
+        }
+
+        // Detection des collisions de Mario avec les "pièces en or"
+        for (Coin coin : arrayCoins) {
+            if (this.mario.near(coin)) {
+                if (this.mario.collisionCoin(coin)) {
+                    arrayCoins.remove(coin);
+                }
             }
         }
 
@@ -226,7 +235,7 @@ public class Scene extends JPanel {
 
         // Placement des "pièces en or"
         for (Coin coin : arrayCoins) { // Similaire à Array.forEach en JS
-            ((Graphics2D) g).drawImage(coin.getImgObject(), coin.getX(), coin.getY(), null);
+            ((Graphics2D) g).drawImage(coin.flipCoin(), coin.getX(), coin.getY(), null);
         }
 
         // Placement de Mario

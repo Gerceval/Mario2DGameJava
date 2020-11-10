@@ -17,7 +17,7 @@ public class Mario extends Character {
     public Mario(int x, int y) {
         super(28, 50, x, y);
 
-        ImageIcon icoMario = new ImageIcon(getClass().getResource("/images/marioWalkRight.png"));
+        ImageIcon icoMario = new ImageIcon(getClass().getResource("/images/mario/marioWalkRight.png"));
         imgMario = icoMario.getImage();
         this.isJumping = false;
         this.jumpCount = 0;
@@ -39,26 +39,26 @@ public class Mario extends Character {
                 jumpCount = 41;
             }
             if (this.getIsTurnToRight()) {
-                imagePath = "/images/marioJumpRight.png";
+                imagePath = "/images/mario/marioJumpRight.png";
             } else {
-                imagePath = "/images/marioJumpLeft.png";
+                imagePath = "/images/mario/marioJumpLeft.png";
             }
         }
         // Retombée du saut
         else if (this.getY() + this.getHeight() < Main.scene.getyBottom()) {
             this.setY(this.getY() + 1); // Mario descend de 1 pixel
             if (this.getIsTurnToRight()) {
-                imagePath = "/images/marioJumpRight.png";
+                imagePath = "/images/mario/marioJumpRight.png";
             } else {
-                imagePath = "/images/marioJumpLeft.png";
+                imagePath = "/images/mario/marioJumpLeft.png";
             }
         }
         // Saut terminé
         else {
             if (this.getIsTurnToRight()) {
-                imagePath = "/images/marioStopRight.png";
+                imagePath = "/images/mario/marioStopRight.png";
             } else {
-                imagePath = "/images/marioStopLeft.png";
+                imagePath = "/images/mario/marioStopLeft.png";
             }
             this.isJumping = false;
             this.jumpCount = 0;
@@ -93,6 +93,45 @@ public class Mario extends Character {
 
     public boolean collisionCoin(Coin coin) {
         return super.collisionBack(coin) || super.collisionFront(coin) || super.collisionBottom(coin) || super.collisionTop(coin);
+    }
+
+    @Override // On override pour modifier le premier "if" qui doit prendre en compte le fait que mario soit tout à gauche ou à droite de l'écran pour s'arrêter de marcher
+    public Image walk(String name, int frequence) {
+        String str;
+        ImageIcon ico;
+        Image img;
+
+        if (!isWalking || Main.scene.getxPos() <= 0 || Main.scene.getxPos() > 4430) {
+            if (isTurnToRight) {
+                str = "/images/" + name + "/" + name + "StopRight.png";
+            } else {
+                str = "/images/" + name + "/" + name + "StopLeft.png";
+            }
+        } else {
+            this.count = this.count + 1;
+            if (this.count / frequence == 0) {
+                if (isTurnToRight) {
+                    str = "/images/" + name + "/" + name + "StopRight.png";
+                } else {
+                    str = "/images/" + name + "/" + name + "StopLeft.png";
+                }
+            } else {
+                if (isTurnToRight) {
+                    str = "/images/" + name + "/" + name + "WalkRight.png";
+                } else {
+                    str = "/images/" + name + "/" + name + "WalkLeft.png";
+                }
+            }
+            if (this.count == (2 * frequence)) {
+                this.count = 0;
+            }
+        }
+
+        // Affichage de l'image du personnage
+        ico = new ImageIcon(getClass().getResource(str));
+        img = ico.getImage();
+
+        return img;
     }
 
     // GETTERS & SETTERS

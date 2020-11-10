@@ -10,8 +10,8 @@ public class Character {
 
     private int width, height; // dimensions
     private int x, y; // position
-    private boolean isWalking;
-    private boolean isTurnToRight; // est-il tourné vers la droite
+    protected boolean isWalking;
+    protected boolean isTurnToRight; // est-il tourné vers la droite
     public int count; // compteur de pas
 
     // CONSTRUCTOR
@@ -32,25 +32,25 @@ public class Character {
         ImageIcon ico;
         Image img;
 
-        if (!isWalking || Main.scene.getxPos() <= 0 || Main.scene.getxPos() > 4430) {
+        if (!isWalking) {
             if (isTurnToRight) {
-                str = "/images/" + name + "StopRight.png";
+                str = "/images/" + name + "/" + name + "StopRight.png";
             } else {
-                str = "/images/" + name + "StopLeft.png";
+                str = "/images/" + name + "/" + name + "StopLeft.png";
             }
         } else {
             this.count++;
             if (this.count / frequence == 0) {
                 if (isTurnToRight) {
-                    str = "/images/" + name + "StopRight.png";
+                    str = "/images/" + name + "/" + name + "StopRight.png";
                 } else {
-                    str = "/images/" + name + "StopLeft.png";
+                    str = "/images/" + name + "/" + name + "StopLeft.png";
                 }
             } else {
                 if (isTurnToRight) {
-                    str = "/images/" + name + "WalkRight.png";
+                    str = "/images/" + name + "/" + name + "WalkRight.png";
                 } else {
-                    str = "/images/" + name + "WalkLeft.png";
+                    str = "/images/" + name + "/" + name + "WalkLeft.png";
                 }
             }
             if (this.count == (2 * frequence)) {
@@ -65,8 +65,7 @@ public class Character {
         return img;
     }
 
-    // COLLISIONS
-    // Détection contact à droite de Mario
+    // Détection contact à droite d'un objet
     public boolean collisionFront(Object object) {
         if (this.x + this.width < object.getX() || this.x + this.width > object.getX() + 5 ||
                 this.y + this.height <= object.getY() || this.y >= object.getY() + object.getHeight()) {
@@ -76,7 +75,7 @@ public class Character {
         }
     }
 
-    // Détection contact à gauche de Mario
+    // Détection contact à gauche d'un objet
     protected boolean collisionBack(Object object) {
         if (this.x > object.getX() + object.getWidth() || this.x + this.width < object.getX() + object.getWidth() - 5 ||
                 this.y + this.height <= object.getY() || this.y >= object.getY() + object.getHeight()) {
@@ -86,7 +85,27 @@ public class Character {
         }
     }
 
-    // Détection contact en dessous de Mario
+    // Détection contact à droite d'un personnage
+    public boolean collisionFront(Character character) {
+        if (this.x + this.width < character.getX() || this.x + this.width > character.getX() + 5 ||
+                this.y + this.height <= character.getY() || this.y >= character.getY() + character.getHeight()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // Détection contact à gauche d'un personnage
+    protected boolean collisionBack(Character character) {
+        if (this.x > character.getX() + character.getWidth() || this.x + this.width < character.getX() + character.getWidth() - 5 ||
+                this.y + this.height <= character.getY() || this.y >= character.getY() + character.getHeight()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // Détection contact en dessous d'un objet
     protected boolean collisionBottom(Object object) {
         if (this.x + this.width < object.getX() + 5 || this.x > object.getX() + object.getWidth() - 5 ||
                 this.y + this.height < object.getY() || this.y + this.height > object.getY() + 5) {
@@ -96,7 +115,7 @@ public class Character {
         }
     }
 
-    // Détection contact au-dessus de Mario
+    // Détection contact au-dessus d'un objet
     protected boolean collisionTop(Object object) {
         if (this.x + this.width < object.getX() + 5 || this.x > object.getX() + object.getWidth() - 5 ||
                 this.y < object.getY() + object.getHeight() || this.y > object.getY() + object.getHeight() + 5) {
@@ -106,12 +125,29 @@ public class Character {
         }
     }
 
+    // Détecte si un * est proche d'un objet
     public boolean near(Object object) {
         if ((this.x > object.getX() - 10 && this.x < object.getX() + object.getWidth() + 10)
                 || (this.x + this.width > object.getX() - 10 && this.x + this.width < object.getX() + object.getWidth() + 10)) {
             return true;
         } else {
             return false;
+        }
+    }
+
+    // Détecte si un * est proche d'un personnage
+    public boolean near(Character character) {
+        if ((this.x > character.getX() - 10 && this.x < character.getX() + character.getWidth() + 10)
+                || (this.x + this.width > character.getX() - 10 && this.x + this.width < character.getX() + character.getWidth() + 10)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void move() {
+        if (Main.scene.getxPos() >= 0) {
+            this.x = this.x - Main.scene.getDx();
         }
     }
 

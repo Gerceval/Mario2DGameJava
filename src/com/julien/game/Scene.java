@@ -1,5 +1,7 @@
 package com.julien.game;
 
+import com.julien.character.Goomba;
+import com.julien.character.Koopa;
 import com.julien.character.Mario;
 import com.julien.object.Block;
 import com.julien.object.Coin;
@@ -27,6 +29,10 @@ public class Scene extends JPanel {
     private int topHeight; // hauteur du plafond;
 
     public Mario mario;
+
+    public Goomba goomba;
+
+    public Koopa koopa;
 
     public RedPipe redPipe_01;
     public RedPipe redPipe_02;
@@ -82,13 +88,17 @@ public class Scene extends JPanel {
         imgBackground_01 = icoBackground.getImage();
         imgBackground_02 = icoBackground.getImage();
 
-        ImageIcon icoCastleStart = new ImageIcon(getClass().getResource("/images/castle_01.png"));
+        ImageIcon icoCastleStart = new ImageIcon(getClass().getResource("/images/objects/castle_01.png"));
         imgCastleStart = icoCastleStart.getImage();
 
-        ImageIcon icoStart = new ImageIcon(getClass().getResource("/images/startPanel.png"));
+        ImageIcon icoStart = new ImageIcon(getClass().getResource("/images/objects/startPanel.png"));
         imgStart = icoStart.getImage();
 
         mario = new Mario(300, 245);
+
+        goomba = new Goomba(800, 263);
+
+        koopa = new Koopa(900, 243);
 
         redPipe_01 = new RedPipe(600, 230);
         redPipe_02 = new RedPipe(1000, 230);
@@ -123,10 +133,10 @@ public class Scene extends JPanel {
         coin_09 = new Coin(4200, 145);
         coin_10 = new Coin(4600, 40);
 
-        ImageIcon icoCastleEnd = new ImageIcon(getClass().getResource("/images/castleEnd.png"));
+        ImageIcon icoCastleEnd = new ImageIcon(getClass().getResource("/images/objects/castleEnd.png"));
         imgCastleEnd = icoCastleEnd.getImage();
 
-        ImageIcon icoFlagEnd = new ImageIcon(getClass().getResource("/images/flagEnd.png"));
+        ImageIcon icoFlagEnd = new ImageIcon(getClass().getResource("/images/objects/flagEnd.png"));
         imgFlagEnd = icoFlagEnd.getImage();
 
         arrayObjects = new ArrayList<Object>();
@@ -195,11 +205,11 @@ public class Scene extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Detection des collisions de Mario avec les objets
+        // Detection des collisions avec les objets proches
         for (Object object : arrayObjects) { // Similaire à Array.forEach en JS
-            if (this.mario.near(object)) {
-                this.mario.collision(object);
-            }
+            if (this.mario.near(object)) { this.mario.collision(object); }
+            if (this.goomba.near(object)) { this.goomba.collision(object); }
+            if (this.koopa.near(object)) { this.koopa.collision(object); }
         }
 
         // Detection des collisions de Mario avec les "pièces en or"
@@ -211,8 +221,12 @@ public class Scene extends JPanel {
             }
         }
 
+        if (this.goomba.near(this.koopa)) { this.goomba.collision(this.koopa); }
+        if (this.koopa.near(this.goomba)) { this.koopa.collision(this.goomba); }
+
         moveBackground();
 
+        // Déplacement de tous les objets "fixes" du jeu
         if (xPos >= 0 && xPos <= 4430) {
             for (Object object : arrayObjects) { // Similaire à Array.forEach en JS
                 object.move();
@@ -220,6 +234,8 @@ public class Scene extends JPanel {
             for (Coin coin : arrayCoins) { // Similaire à Array.forEach en JS
                 coin.move();
             }
+            goomba.move();
+            koopa.move();
         }
 
         // ((Graphics2D) g) = Cast de "Graphics g" en Graphics2D
@@ -244,6 +260,12 @@ public class Scene extends JPanel {
         } else {
             ((Graphics2D) g).drawImage(mario.walk("mario", 30), mario.getX(), mario.getY(), null);
         }
+
+        // Placement du goomba
+        ((Graphics2D) g).drawImage(goomba.walk("goomba", 45), goomba.getX(), goomba.getY(), null);
+
+        // Placement du koopa
+        ((Graphics2D) g).drawImage(koopa.walk("koopa", 45), koopa.getX(), koopa.getY(), null);
 
         ((Graphics2D) g).drawImage(imgFlagEnd, 4650 - xPos, 115, null);
         ((Graphics2D) g).drawImage(imgCastleEnd, 5000 - xPos, 145, null);

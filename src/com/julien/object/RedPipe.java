@@ -6,7 +6,7 @@ public class RedPipe extends Object {
     public RedPipe(int x, int y) {
         super(43, 65, x, y);
 
-        super.icoObject = new ImageIcon(getClass().getResource("/images/redPipe.png"));
+        super.icoObject = new ImageIcon(getClass().getResource("/images/objects/redPipe.png"));
         super.imgObject = this.icoObject.getImage();
     }
 }

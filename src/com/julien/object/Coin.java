@@ -5,12 +5,11 @@ import java.awt.*;
 public class Coin extends Object implements Runnable {
 
     private int count;
-    private final int PAUSE = 15; // temps d'attente entre 2 tours de boucle (en ms)
 
     public Coin(int x, int y) {
         super(30, 30, x, y);
 
-        super.icoObject = new ImageIcon(getClass().getResource("/images/coin_01.png"));
+        super.icoObject = new ImageIcon(getClass().getResource("/images/objects/coin_01.png"));
         super.imgObject = this.icoObject.getImage();
     }
 
@@ -22,8 +21,8 @@ public class Coin extends Object implements Runnable {
 
         this.count++;
 
-        if (this.count / 100 == 0) { str = "/images/coin_01.png"; }
-        else { str = "/images/coin_02.png"; }
+        if (this.count / 100 == 0) { str = "/images/objects/coin_01.png"; }
+        else { str = "/images/objects/coin_02.png"; }
 
         if (this.count == 200) { this.count = 0; }
 
@@ -39,7 +38,9 @@ public class Coin extends Object implements Runnable {
 
         while(true) {
             this.flipCoin();
-            try { Thread.sleep(this.PAUSE); }
+            try { // temps d'attente entre 2 tours de boucle (en ms)
+                int PAUSE = 15;
+                Thread.sleep(PAUSE); }
             catch(InterruptedException ignored) { }
         }
     }

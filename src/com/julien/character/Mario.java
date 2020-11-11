@@ -12,6 +12,7 @@ public class Mario extends Character {
     private final Image imgMario;
     private boolean isJumping;
     private int jumpCount; // durée et hauteur du saut
+    private int deadCount;
 
     // CONSTRUCTOR
     public Mario(int x, int y) {
@@ -22,6 +23,7 @@ public class Mario extends Character {
 
         this.isJumping = false;
         this.jumpCount = 0;
+        this.deadCount = 0;
     }
 
     public Image jump() {
@@ -106,6 +108,24 @@ public class Mario extends Character {
                 character.setAlive(false);
             }
         }
+    }
+
+    public Image dies() {
+        ImageIcon ico;
+        Image img;
+        String str;
+
+        str = "/images/boom.png";
+        deadCount++;
+
+        if (deadCount > 100) {
+            str = "/images/mario/marioDie.png";
+            setY(getY() - 1);
+        }
+
+        ico = new ImageIcon(getClass().getResource(str));
+        img = ico.getImage();
+        return img;
     }
 
     @Override // On override pour modifier le premier "if" qui doit prendre en compte le fait que mario soit tout à gauche ou à droite de l'écran pour s'arrêter de marcher

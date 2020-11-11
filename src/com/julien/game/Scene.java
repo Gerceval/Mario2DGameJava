@@ -3,6 +3,8 @@ package com.julien.game;
 import com.julien.character.Goomba;
 import com.julien.character.Koopa;
 import com.julien.character.Mario;
+import com.julien.display.Countdown;
+import com.julien.display.Score;
 import com.julien.object.Block;
 import com.julien.object.Coin;
 import com.julien.object.Object;
@@ -89,6 +91,11 @@ public class Scene extends JPanel {
     private final ArrayList<Coin> arrayCoins; // Tableau des "pièces en or" du jeux
     private final ArrayList<Goomba> arrrayGoomba; // Tableau des Goombas
     private final ArrayList<Koopa> arrayKoopa; // Tableau des Koopas
+
+    private Score score;
+    private Font font;
+
+    private Countdown countdown;
 
     // CONSTRUCTOR
     public Scene() {
@@ -226,6 +233,11 @@ public class Scene extends JPanel {
         arrayKoopa.add(koopa_08);
         arrayKoopa.add(koopa_09);
 
+        score = new Score();
+        font = new Font("Arial", Font.PLAIN, 18);
+
+        countdown = new Countdown();
+
         this.setFocusable(true);
         this.requestFocusInWindow();
         this.addKeyListener(new Keyboard());
@@ -253,6 +265,18 @@ public class Scene extends JPanel {
         }
     }
 
+    public boolean win() {
+        return countdown.getTimeCount() > 0 && mario.isAlive() && score.getNbrCoins() == score.getTotalCoins() && xPos > 4400;
+    }
+
+    public boolean loose() {
+        return !mario.isAlive() || countdown.getTimeCount() <= 0;
+    }
+
+    public boolean endGame() {
+        return win() || loose();
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -275,6 +299,7 @@ public class Scene extends JPanel {
             if (this.mario.near(coin)) {
                 if (this.mario.collisionCoin(coin)) {
                     arrayCoins.remove(coin);
+                    score.setNbrCoins(score.getNbrCoins() + 1);
                 }
             }
         }
@@ -350,11 +375,17 @@ public class Scene extends JPanel {
         }
 
         // Placement de Mario
-        if (mario.getIsJumping()) {
-            ((Graphics2D) g).drawImage(mario.jump(), mario.getX(), mario.getY(), null);
-        } else {
-            ((Graphics2D) g).drawImage(mario.walk("mario", 30), mario.getX(), mario.getY(), null);
+        if (mario.isAlive()) {
+            if (mario.getIsJumping()) {
+                ((Graphics2D) g).drawImage(mario.jump(), mario.getX(), mario.getY(), null);
+            } else {
+                ((Graphics2D) g).drawImage(mario.walk("mario", 30), mario.getX(), mario.getY(), null);
+            }
         }
+        else {
+            ((Graphics2D) g).drawImage(mario.dies(), mario.getX(), mario.getY(), null);
+        }
+
 
         // Placement des goombas
         for (Goomba goomba : arrrayGoomba) {
@@ -378,6 +409,25 @@ public class Scene extends JPanel {
 
         ((Graphics2D) g).drawImage(imgFlagEnd, 4650 - xPos, 115, null);
         ((Graphics2D) g).drawImage(imgCastleEnd, 5000 - xPos, 145, null);
+
+        // Affichage et màj du Score
+        ((Graphics2D) g).setFont(font);
+        ((Graphics2D) g).drawString(score.getNbrCoins() + " / " + score.getTotalCoins() + " coins", 580, 25);
+
+        // Affichage du compte à rebours
+        ((Graphics2D) g).drawString(countdown.getStr(), 5, 25);
+
+        // Fin de la partie
+        if (endGame()) {
+            Font endFont = new Font("Arial", Font.BOLD, 50);
+            ((Graphics2D) g).setFont(endFont);
+            if (win()) {
+                ((Graphics2D) g).drawString("Gagné !", 120, 180);
+            }
+            else {
+                ((Graphics2D) g).drawString("Perdu ! T'es nul mon gars !", 20, 180);
+            }
+        }
     }
 
     // GETTERS & SETTERS

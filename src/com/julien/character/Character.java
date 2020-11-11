@@ -13,6 +13,7 @@ public class Character {
     protected boolean isWalking;
     protected boolean isTurnToRight; // est-il tourné vers la droite
     public int count; // compteur de pas
+    protected boolean isAlive;
 
     // CONSTRUCTOR
     public Character(int width, int height, int x, int y) {
@@ -23,6 +24,7 @@ public class Character {
         this.isWalking = false;
         this.isTurnToRight = true;
         this.count = 0;
+        this.isAlive = true;
     }
 
     // METHODS
@@ -115,6 +117,16 @@ public class Character {
         }
     }
 
+    // Détection contact en dessous d'un personnage
+    protected boolean collisionBottom(Character character) {
+        if (this.x + this.width < character.getX() + 5 || this.x > character.getX() + character.getWidth() - 5 ||
+                this.y + this.height < character.getY() || this.y + this.height > character.getY() + 5) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     // Détection contact au-dessus d'un objet
     protected boolean collisionTop(Object object) {
         if (this.x + this.width < object.getX() + 5 || this.x > object.getX() + object.getWidth() - 5 ||
@@ -180,6 +192,8 @@ public class Character {
         return count;
     }
 
+    public boolean isAlive() { return isAlive; }
+
     // SETTERS
     public void setHeight(int height) {
         this.height = height;
@@ -208,4 +222,6 @@ public class Character {
     public void setWidth(int width) {
         this.width = width;
     }
+
+    public void setAlive(boolean alive) { isAlive = alive; }
 }

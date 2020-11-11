@@ -55,14 +55,29 @@ public class Goomba extends Character implements Runnable {
         }
     }
 
+    public Image dies() {
+        ImageIcon ico;
+        Image img;
+        String str;
+
+        if (this.isTurnToRight) { str = "/images/goomba/goombaCrushedRight.png"; }
+        else { str = "/images/goomba/goombaCrushedLeft.png"; }
+
+        ico = new ImageIcon(getClass().getResource(str));
+        img = ico.getImage();
+        return img;
+    }
+
     @Override
     public void run() {
         try { Thread.sleep(20); }
         catch(InterruptedException ignored) { }
          while (true) {
-             this.walk();
-             try { Thread.sleep(this.PAUSE); }
-             catch(InterruptedException ignored) { }
+             if (this.isAlive) {
+                 this.walk();
+                 try { Thread.sleep(this.PAUSE); }
+                 catch(InterruptedException ignored) { }
+             }
          }
     }
 

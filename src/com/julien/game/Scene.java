@@ -30,10 +30,6 @@ public class Scene extends JPanel {
 
     public Mario mario;
 
-    public Goomba goomba;
-
-    public Koopa koopa;
-
     public RedPipe redPipe_01;
     public RedPipe redPipe_02;
     public RedPipe redPipe_03;
@@ -67,11 +63,32 @@ public class Scene extends JPanel {
     public Coin coin_09;
     public Coin coin_10;
 
+    public Goomba goomba_01;
+    public Goomba goomba_02;
+    public Goomba goomba_03;
+    public Goomba goomba_04;
+    public Goomba goomba_05;
+    public Goomba goomba_06;
+    public Goomba goomba_07;
+    public Goomba goomba_08;
+
+    public Koopa koopa_01;
+    public Koopa koopa_02;
+    public Koopa koopa_03;
+    public Koopa koopa_04;
+    public Koopa koopa_05;
+    public Koopa koopa_06;
+    public Koopa koopa_07;
+    public Koopa koopa_08;
+    public Koopa koopa_09;
+
     private final Image imgCastleEnd;
     private final Image imgFlagEnd;
 
     private final ArrayList<Object> arrayObjects; // Tableau de tous les objets du jeu
     private final ArrayList<Coin> arrayCoins; // Tableau des "pièces en or" du jeux
+    private final ArrayList<Goomba> arrrayGoomba; // Tableau des Goombas
+    private final ArrayList<Koopa> arrayKoopa; // Tableau des Koopas
 
     // CONSTRUCTOR
     public Scene() {
@@ -95,10 +112,6 @@ public class Scene extends JPanel {
         imgStart = icoStart.getImage();
 
         mario = new Mario(300, 245);
-
-        goomba = new Goomba(800, 263);
-
-        koopa = new Koopa(900, 243);
 
         redPipe_01 = new RedPipe(600, 230);
         redPipe_02 = new RedPipe(1000, 230);
@@ -133,6 +146,25 @@ public class Scene extends JPanel {
         coin_09 = new Coin(4200, 145);
         coin_10 = new Coin(4600, 40);
 
+        goomba_01 = new Goomba(800, 263);
+        goomba_02 = new Goomba(1100, 263);
+        goomba_03 = new Goomba(2100, 263);
+        goomba_04 = new Goomba(2400, 263);
+        goomba_05 = new Goomba(3200, 263);
+        goomba_06 = new Goomba(3500, 263);
+        goomba_07 = new Goomba(3700, 263);
+        goomba_08 = new Goomba(4500, 263);
+
+        koopa_01 = new Koopa(950, 243);
+        koopa_02 = new Koopa(1500, 243);
+        koopa_03 = new Koopa(1800, 243);
+        koopa_04 = new Koopa(2400, 243);
+        koopa_05 = new Koopa(3100, 243);
+        koopa_06 = new Koopa(3600, 243);
+        koopa_07 = new Koopa(3900, 243);
+        koopa_08 = new Koopa(4200, 243);
+        koopa_09 = new Koopa(4400, 243);
+
         ImageIcon icoCastleEnd = new ImageIcon(getClass().getResource("/images/objects/castleEnd.png"));
         imgCastleEnd = icoCastleEnd.getImage();
 
@@ -140,8 +172,6 @@ public class Scene extends JPanel {
         imgFlagEnd = icoFlagEnd.getImage();
 
         arrayObjects = new ArrayList<Object>();
-        arrayCoins = new ArrayList<Coin>();
-
         arrayObjects.add(redPipe_01);
         arrayObjects.add(redPipe_02);
         arrayObjects.add(redPipe_03);
@@ -150,7 +180,6 @@ public class Scene extends JPanel {
         arrayObjects.add(redPipe_06);
         arrayObjects.add(redPipe_07);
         arrayObjects.add(redPipe_08);
-
         arrayObjects.add(block_01);
         arrayObjects.add(block_02);
         arrayObjects.add(block_03);
@@ -164,6 +193,7 @@ public class Scene extends JPanel {
         arrayObjects.add(block_11);
         arrayObjects.add(block_12);
 
+        arrayCoins = new ArrayList<Coin>();
         arrayCoins.add(coin_01);
         arrayCoins.add(coin_02);
         arrayCoins.add(coin_03);
@@ -174,6 +204,27 @@ public class Scene extends JPanel {
         arrayCoins.add(coin_08);
         arrayCoins.add(coin_09);
         arrayCoins.add(coin_10);
+
+        arrrayGoomba = new ArrayList<Goomba>();
+        arrrayGoomba.add(goomba_01);
+        arrrayGoomba.add(goomba_02);
+        arrrayGoomba.add(goomba_03);
+        arrrayGoomba.add(goomba_04);
+        arrrayGoomba.add(goomba_05);
+        arrrayGoomba.add(goomba_06);
+        arrrayGoomba.add(goomba_07);
+        arrrayGoomba.add(goomba_08);
+
+        arrayKoopa = new ArrayList<Koopa>();
+        arrayKoopa.add(koopa_01);
+        arrayKoopa.add(koopa_02);
+        arrayKoopa.add(koopa_03);
+        arrayKoopa.add(koopa_04);
+        arrayKoopa.add(koopa_05);
+        arrayKoopa.add(koopa_06);
+        arrayKoopa.add(koopa_07);
+        arrayKoopa.add(koopa_08);
+        arrayKoopa.add(koopa_09);
 
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -207,9 +258,16 @@ public class Scene extends JPanel {
 
         // Detection des collisions avec les objets proches
         for (Object object : arrayObjects) { // Similaire à Array.forEach en JS
+            // Mario
             if (this.mario.near(object)) { this.mario.collision(object); }
-            if (this.goomba.near(object)) { this.goomba.collision(object); }
-            if (this.koopa.near(object)) { this.koopa.collision(object); }
+            // Goombas
+            for (Goomba goomba : arrrayGoomba) {
+                if (goomba.near(object)) { goomba.collision(object); }
+            }
+            // Koopas
+            for (Koopa koopa : arrayKoopa) {
+                if (koopa.near(object)) { koopa.collision(object); }
+            }
         }
 
         // Detection des collisions de Mario avec les "pièces en or"
@@ -221,8 +279,41 @@ public class Scene extends JPanel {
             }
         }
 
-        if (this.goomba.near(this.koopa)) { this.goomba.collision(this.koopa); }
-        if (this.koopa.near(this.goomba)) { this.koopa.collision(this.goomba); }
+        // Détection des collisions des goombas avec les autres personnages (hors Mario)
+        for (Goomba goomba : arrrayGoomba) {
+            // contacts avec d'autres goombas
+            for (Goomba otherGoomba : arrrayGoomba) {
+                if (goomba != otherGoomba) {
+                    if (goomba.near(otherGoomba)) { goomba.collision(otherGoomba); }
+                }
+            }
+            // contacts avec les koopas
+            for (Koopa koopa : arrayKoopa) {
+                if (koopa.near(goomba)) { goomba.collision(koopa); }
+            }
+        }
+
+        // Détection des collisions des koopas avec les autres personnages (hors Mario)
+        for (Koopa koopa : arrayKoopa) {
+            // contacts avec d'autres koopas
+            for (Koopa otherKoopa : arrayKoopa) {
+                if (koopa != otherKoopa) {
+                    if (koopa.near(otherKoopa)) { koopa.collision(koopa); }
+                }
+            }
+            // contacts avec les goombas
+            for (Goomba goomba : arrrayGoomba) {
+                if (koopa.near(goomba)) { koopa.collision(goomba); }
+            }
+        }
+
+        // Détection des collisions de Mario avec les autres personnages
+        for (Goomba goomba : arrrayGoomba) {
+            if (mario.near(goomba) && goomba.isAlive()) { mario.collision(goomba); }
+        }
+        for (Koopa koopa : arrayKoopa) {
+            if (mario.near(koopa) && koopa.isAlive()) { mario.collision(koopa); }
+        }
 
         moveBackground();
 
@@ -231,11 +322,15 @@ public class Scene extends JPanel {
             for (Object object : arrayObjects) { // Similaire à Array.forEach en JS
                 object.move();
             }
-            for (Coin coin : arrayCoins) { // Similaire à Array.forEach en JS
+            for (Coin coin : arrayCoins) {
                 coin.move();
             }
-            goomba.move();
-            koopa.move();
+            for (Goomba goomba : arrrayGoomba) {
+                goomba.move();
+            }
+            for (Koopa koopa : arrayKoopa) {
+                koopa.move();
+            }
         }
 
         // ((Graphics2D) g) = Cast de "Graphics g" en Graphics2D
@@ -261,11 +356,25 @@ public class Scene extends JPanel {
             ((Graphics2D) g).drawImage(mario.walk("mario", 30), mario.getX(), mario.getY(), null);
         }
 
-        // Placement du goomba
-        ((Graphics2D) g).drawImage(goomba.walk("goomba", 45), goomba.getX(), goomba.getY(), null);
+        // Placement des goombas
+        for (Goomba goomba : arrrayGoomba) {
+            if (goomba.isAlive()) {
+                ((Graphics2D) g).drawImage(goomba.walk("goomba", 45), goomba.getX(), goomba.getY(), null);
+            }
+            else {
+                ((Graphics2D) g).drawImage(goomba.dies(), goomba.getX(), goomba.getY() + 20, null);
+            }
+        }
 
-        // Placement du koopa
-        ((Graphics2D) g).drawImage(koopa.walk("koopa", 45), koopa.getX(), koopa.getY(), null);
+        // Placement des koopas
+        for (Koopa koopa : arrayKoopa) {
+            if (koopa.isAlive()) {
+                ((Graphics2D) g).drawImage(koopa.walk("koopa", 45), koopa.getX(), koopa.getY(), null);
+            }
+            else {
+                ((Graphics2D) g).drawImage(koopa.dies(), koopa.getX(), koopa.getY() + 30, null);
+            }
+        }
 
         ((Graphics2D) g).drawImage(imgFlagEnd, 4650 - xPos, 115, null);
         ((Graphics2D) g).drawImage(imgCastleEnd, 5000 - xPos, 145, null);

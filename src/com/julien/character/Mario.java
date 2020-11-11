@@ -19,6 +19,7 @@ public class Mario extends Character {
 
         ImageIcon icoMario = new ImageIcon(getClass().getResource("/images/mario/marioWalkRight.png"));
         imgMario = icoMario.getImage();
+
         this.isJumping = false;
         this.jumpCount = 0;
     }
@@ -93,6 +94,18 @@ public class Mario extends Character {
 
     public boolean collisionCoin(Coin coin) {
         return super.collisionBack(coin) || super.collisionFront(coin) || super.collisionBottom(coin) || super.collisionTop(coin);
+    }
+
+    public void collision(Character character) {
+        if (character.isAlive) {
+            if (super.collisionFront(character) || super.collisionBack(character)) {
+                this.setWalking(false);
+                this.setAlive(false);
+            } else if (super.collisionBottom(character)) {
+                character.setWalking(false);
+                character.setAlive(false);
+            }
+        }
     }
 
     @Override // On override pour modifier le premier "if" qui doit prendre en compte le fait que mario soit tout à gauche ou à droite de l'écran pour s'arrêter de marcher
